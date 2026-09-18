@@ -6,19 +6,19 @@ import (
 	"mypos-backend/internal/repository"
 )
 
-type ProductService struct {
-	unitRepo *repository.ProductRepository
+type UnitService struct {
+	unitRepo *repository.UnitRepository
 }
 
-func NewProductService(unitRepo *repository.ProductRepository) *ProductService {
-	return &ProductService{unitRepo: unitRepo}
+func NewUnitService(unitRepo *repository.UnitRepository) *UnitService {
+	return &UnitService{unitRepo: unitRepo}
 }
 
-func (s *ProductService) GetAllUnits() ([]model.Unit, error) {
+func (s *UnitService) GetAllUnits() ([]model.Unit, error) {
 	return s.unitRepo.GetAllUnits()
 }
 
-func (s *ProductService) InsertUnit(req *model.CreateUnitRequest) error {
+func (s *UnitService) InsertUnit(req *model.CreateUnitRequest) error {
 	unit := &model.CreateUnitRequest{
 		Name:        req.Name,
 		Description: req.Description,
@@ -27,11 +27,11 @@ func (s *ProductService) InsertUnit(req *model.CreateUnitRequest) error {
 	return s.unitRepo.InsertUnit(unit)
 }
 
-func (s *ProductService) GetUnitByID(id int) (*model.Unit, error) {
+func (s *UnitService) GetUnitByID(id int) (*model.Unit, error) {
 	return s.unitRepo.GetUnitByID(id)
 }
 
-func (s *ProductService) UpdateUnit(req *model.UpdateUnitRequest) error {
+func (s *UnitService) UpdateUnit(req *model.UpdateUnitRequest) error {
 	unit, err := s.unitRepo.GetUnitByID(req.ID)
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func (s *ProductService) UpdateUnit(req *model.UpdateUnitRequest) error {
 	return s.unitRepo.UpdateUnit(req.ID, req)
 }
 
-func (s *ProductService) DeleteUnit(id int) error {
+func (s *UnitService) DeleteUnit(id int) error {
 	unit, err := s.unitRepo.GetUnitByID(id)
 	if err != nil {
 		return err

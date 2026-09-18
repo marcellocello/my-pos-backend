@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(userHandler *handler.UserHandler, authHandler *handler.AuthHandler, productHandler *handler.ProductHandler) *gin.Engine {
+func SetupRoutes(userHandler *handler.UserHandler, authHandler *handler.AuthHandler, unitHandler *handler.UnitHandler) *gin.Engine {
 	r := gin.Default()
 	r.SetTrustedProxies([]string{"127.0.0.1"})
 
@@ -43,11 +43,11 @@ func SetupRoutes(userHandler *handler.UserHandler, authHandler *handler.AuthHand
 		units.Use(middleware.JwtAuthMiddleware())
 		{
 			_ = units
-			units.GET("", productHandler.GetAllUnits)
-			units.POST("", productHandler.InsertUnit)
-			units.GET("/:id", productHandler.GetUnitByID)
-			units.PUT("", productHandler.UpdateUnit)
-			units.DELETE("/:id", productHandler.DeleteUnit)
+			units.GET("", unitHandler.GetAllUnits)
+			units.POST("", unitHandler.InsertUnit)
+			units.GET("/:id", unitHandler.GetUnitByID)
+			units.PUT("", unitHandler.UpdateUnit)
+			units.DELETE("/:id", unitHandler.DeleteUnit)
 		}
 
 		products := api.Group("/products")

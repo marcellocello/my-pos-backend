@@ -5,33 +5,33 @@ import (
 	"mypos-backend/internal/model"
 )
 
-type ProductRepository struct {
+type UnitRepository struct {
 	db *sql.DB
 }
 
-func NewProductRepository(db *sql.DB) *ProductRepository {
-	return &ProductRepository{db: db}
+func NewUnitRepository(db *sql.DB) *UnitRepository {
+	return &UnitRepository{db: db}
 }
 
-func (r *ProductRepository) InsertUnit(unit *model.CreateUnitRequest) error {
+func (r *UnitRepository) InsertUnit(unit *model.CreateUnitRequest) error {
 	query := `INSERT INTO units (name, description) VALUES (?, ?)`
 	_, err := r.db.Exec(query, unit.Name, unit.Description)
 	return err
 }
 
-func (r *ProductRepository) UpdateUnit(id int, unit *model.UpdateUnitRequest) error {
+func (r *UnitRepository) UpdateUnit(id int, unit *model.UpdateUnitRequest) error {
 	query := `UPDATE units SET name = ?, description = ? WHERE id = ?`
 	_, err := r.db.Exec(query, unit.Name, unit.Description, id)
 	return err
 }
 
-func (r *ProductRepository) DeleteUnit(id int) error {
+func (r *UnitRepository) DeleteUnit(id int) error {
 	query := `DELETE FROM units WHERE id = ?`
 	_, err := r.db.Exec(query, id)
 	return err
 }
 
-func (r *ProductRepository) GetUnitByID(id int) (*model.Unit, error) {
+func (r *UnitRepository) GetUnitByID(id int) (*model.Unit, error) {
 	var unit model.Unit
 	query := `SELECT id, name, description FROM units WHERE id = ?`
 	err := r.db.QueryRow(query, id).Scan(&unit.ID, &unit.Name, &unit.Description)
@@ -42,7 +42,7 @@ func (r *ProductRepository) GetUnitByID(id int) (*model.Unit, error) {
 	return &unit, err
 }
 
-func (r *ProductRepository) GetAllUnits() ([]model.Unit, error) {
+func (r *UnitRepository) GetAllUnits() ([]model.Unit, error) {
 	var unit []model.Unit
 
 	query := `SELECT id, name, description FROM units`

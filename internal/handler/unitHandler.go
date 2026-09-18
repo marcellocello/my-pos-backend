@@ -9,16 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ProductHandler struct {
-	productService *service.ProductService
+type UnitHandler struct {
+	unitService *service.UnitService
 }
 
-func NewProductHandler(productService *service.ProductService) *ProductHandler {
-	return &ProductHandler{productService: productService}
+func NewUnitHandler(unitService *service.UnitService) *UnitHandler {
+	return &UnitHandler{unitService: unitService}
 }
 
-func (h *ProductHandler) GetAllUnits(c *gin.Context) {
-	units, err := h.productService.GetAllUnits()
+func (h *UnitHandler) GetAllUnits(c *gin.Context) {
+	units, err := h.unitService.GetAllUnits()
 	if err != nil {
 		response.BadRequest(c, "Gagal mengambil data units:"+err.Error())
 	}
@@ -30,7 +30,7 @@ func (h *ProductHandler) GetAllUnits(c *gin.Context) {
 	response.Success(c, "Data units berhasil diambil", units)
 }
 
-func (h *ProductHandler) InsertUnit(c *gin.Context) {
+func (h *UnitHandler) InsertUnit(c *gin.Context) {
 	var req model.CreateUnitRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -38,7 +38,7 @@ func (h *ProductHandler) InsertUnit(c *gin.Context) {
 		return
 	}
 
-	if err := h.productService.InsertUnit(&req); err != nil {
+	if err := h.unitService.InsertUnit(&req); err != nil {
 		response.InternalServerError(c, "Gagal menambahkan unit:"+err.Error())
 		return
 	}
@@ -46,7 +46,7 @@ func (h *ProductHandler) InsertUnit(c *gin.Context) {
 	response.Created(c, "Berhasil menambahkan unit", nil)
 }
 
-func (h *ProductHandler) UpdateUnit(c *gin.Context) {
+func (h *UnitHandler) UpdateUnit(c *gin.Context) {
 	var req model.UpdateUnitRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -54,7 +54,7 @@ func (h *ProductHandler) UpdateUnit(c *gin.Context) {
 		return
 	}
 
-	if err := h.productService.UpdateUnit(&req); err != nil {
+	if err := h.unitService.UpdateUnit(&req); err != nil {
 		response.InternalServerError(c, "Gagal update data unit:"+err.Error())
 		return
 	}
@@ -62,7 +62,7 @@ func (h *ProductHandler) UpdateUnit(c *gin.Context) {
 	response.Success(c, "Berhasil update data unit", nil)
 }
 
-func (h *ProductHandler) DeleteUnit(c *gin.Context) {
+func (h *UnitHandler) DeleteUnit(c *gin.Context) {
 	unitId := c.Param("id")
 
 	if unitId == "" {
@@ -76,7 +76,7 @@ func (h *ProductHandler) DeleteUnit(c *gin.Context) {
 		return
 	}
 
-	err = h.productService.DeleteUnit(unitIdConverted)
+	err = h.unitService.DeleteUnit(unitIdConverted)
 	if err != nil {
 		response.InternalServerError(c, "Gagal menghapus data unit:"+err.Error())
 		return
@@ -85,7 +85,7 @@ func (h *ProductHandler) DeleteUnit(c *gin.Context) {
 	response.Success(c, "Berhasil menghapus data unit", nil)
 }
 
-func (h *ProductHandler) GetUnitByID(c *gin.Context) {
+func (h *UnitHandler) GetUnitByID(c *gin.Context) {
 	unitId := c.Param("id")
 
 	if unitId == "" {
@@ -99,7 +99,7 @@ func (h *ProductHandler) GetUnitByID(c *gin.Context) {
 		return
 	}
 
-	unit, err := h.productService.GetUnitByID(unitIdConverted)
+	unit, err := h.unitService.GetUnitByID(unitIdConverted)
 	if err != nil {
 		response.InternalServerError(c, "Gagal mendapatkan data unit:"+err.Error())
 		return
