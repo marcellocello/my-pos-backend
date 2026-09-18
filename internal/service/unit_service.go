@@ -19,12 +19,7 @@ func (s *UnitService) GetAllUnits() ([]model.Unit, error) {
 }
 
 func (s *UnitService) InsertUnit(req *model.CreateUnitRequest) error {
-	unit := &model.CreateUnitRequest{
-		Name:        req.Name,
-		Description: req.Description,
-	}
-
-	return s.unitRepo.InsertUnit(unit)
+	return s.unitRepo.InsertUnit(req)
 }
 
 func (s *UnitService) GetUnitByID(id int) (*model.Unit, error) {

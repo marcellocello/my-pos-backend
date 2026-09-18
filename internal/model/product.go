@@ -13,6 +13,7 @@ type Product struct {
 	CategoryID    *int      `json:"category_id"`
 	CategoryName  *string   `json:"category_name,omitempty"`
 	UnitID        *int      `json:"unit_id"`
+	UnitName      *string   `json:"unit_name,omitempty"`
 	SKU           *string   `json:"sku"`
 	Name          string    `json:"name"`
 	CostPrice     float64   `json:"cost_price"`
@@ -26,6 +27,7 @@ type Product struct {
 
 type CreateProductRequest struct {
 	CategoryID    *int    `json:"category_id"`
+	UnitID        *int    `json:"unit_id"`
 	SKU           *string `json:"sku"`
 	Name          string  `json:"name"`
 	CostPrice     float64 `json:"cost_price"`

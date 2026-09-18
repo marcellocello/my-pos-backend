@@ -31,7 +31,11 @@ func main() {
 	unitService := service.NewUnitService(unitRepo)
 	unitHandler := handler.NewUnitHandler(unitService)
 
-	r := router.SetupRoutes(userHandler, authHandler, unitHandler)
+	productRepo := repository.NewProductRepository(db)
+	productService := service.NewProductService(productRepo)
+	productHandler := handler.NewProductHandler(productService)
+
+	r := router.SetupRoutes(userHandler, authHandler, unitHandler, productHandler)
 
 	serverAddr := fmt.Sprintf("%s:%s", cfg.ServerHost, cfg.ServerPort)
 	log.Printf("Starting MyPOS backend server (Gin) on http://%s ...\n", serverAddr)
