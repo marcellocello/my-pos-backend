@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(userHandler *handler.UserHandler) *gin.Engine {
+func SetupRoutes(userHandler *handler.UserHandler, authHandler *handler.AuthHandler, productHandler *handler.ProductHandler) *gin.Engine {
 	r := gin.Default()
 	r.SetTrustedProxies([]string{"127.0.0.1"})
 
@@ -27,8 +27,7 @@ func SetupRoutes(userHandler *handler.UserHandler) *gin.Engine {
 		auth := api.Group("/auth")
 		{
 			_ = auth
-			// auth.POST("/login", authHandler.Login)
-			// auth.POST("/login", authHandler.Login)
+			auth.POST("/login", authHandler.Login)
 			// auth.GET("/me", authHandler.Me)
 		}
 
@@ -40,10 +39,21 @@ func SetupRoutes(userHandler *handler.UserHandler) *gin.Engine {
 			user.PUT("/change-password", userHandler.ChangePassword)
 		}
 
+		units := api.Group("/units")
+		units.Use(middleware.JwtAuthMiddleware())
+		{
+			_ = units
+			units.GET("", productHandler.GetAllUnits)
+			units.POST("", productHandler.InsertUnit)
+			units.GET("/:id", productHandler.GetUnitByID)
+			units.PUT("", productHandler.UpdateUnit)
+			units.DELETE("/:id", productHandler.DeleteUnit)
+		}
+
 		products := api.Group("/products")
 		{
 			_ = products
-			// products.GET("", productHandler.GetAll)
+			// products.GET("", productHandler.GetAllUnits)
 			// products.GET("/:id", productHandler.GetByID)
 			// products.POST("", productHandler.Create)
 			// products.PUT("/:id", productHandler.Update)

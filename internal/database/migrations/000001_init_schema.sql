@@ -17,9 +17,37 @@ CREATE TABLE IF NOT EXISTS categories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Tabel satuan produk (pcs, bal, dus, karton, dll)
+CREATE TABLE IF NOT EXISTS units (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nama satuan, contoh: pcs, bal, dus',
+    description VARCHAR(100) NULL COMMENT 'Keterangan tambahan satuan'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Data satuan umum toko kelontong
+INSERT INTO units (name, description) VALUES
+    ('pcs',    'Piece / Satuan Buah'),
+    ('bal',    'Bal / Bale (isi banyak pcs)'),
+    ('dus',    'Dus / Karton Besar'),
+    ('karton', 'Karton'),
+    ('lusin',  'Lusin (12 pcs)'),
+    ('kodi',   'Kodi (20 pcs)'),
+    ('kg',     'Kilogram'),
+    ('gram',   'Gram'),
+    ('liter',  'Liter'),
+    ('ml',     'Mililiter'),
+    ('botol',  'Botol'),
+    ('kaleng', 'Kaleng'),
+    ('pack',   'Pack / Paket'),
+    ('sachet', 'Sachet'),
+    ('lembar', 'Lembar'),
+    ('roll',   'Roll / Gulungan')
+ON DUPLICATE KEY UPDATE name = name;
+
 CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NULL,
+    unit_id INT NOT NULL DEFAULT 1 COMMENT 'Referensi ke tabel units (default: pcs)',
     sku VARCHAR(50) UNIQUE,
     name VARCHAR(200) NOT NULL,
     cost_price DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
@@ -30,6 +58,7 @@ CREATE TABLE IF NOT EXISTS products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+    FOREIGN KEY (unit_id) REFERENCES units(id),
     INDEX idx_product_name (name),
     INDEX idx_product_sku (sku),
     INDEX idx_product_stock (stock)

@@ -47,3 +47,7 @@ func NotFound(c *gin.Context, errMsg string) {
 func InternalServerError(c *gin.Context, errMsg string) {
 	Error(c, http.StatusInternalServerError, errMsg)
 }
+
+func Unauthorized(c *gin.Context, errMsg string) {
+	Error(c, http.StatusUnauthorized, errMsg)
+}

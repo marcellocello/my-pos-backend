@@ -20,8 +20,8 @@ type User struct {
 }
 
 type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" binding:"required,min=4"`
+	Password string `json:"password" binding:"required,min=8"`
 }
 
 type LoginResponse struct {

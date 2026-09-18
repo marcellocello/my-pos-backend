@@ -21,8 +21,8 @@ func (r *UserRepository) Create(user *model.User) error {
 
 func (r *UserRepository) GetByUsername(username string) (*model.User, error) {
 	var user model.User
-	query := `SELECT id, username, full_name, role, created_at, updated_at FROM users WHERE username = ?`
-	err := r.db.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.FullName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	query := `SELECT id, username, password_hash, full_name, role, created_at, updated_at FROM users WHERE username = ?`
+	err := r.db.QueryRow(query, username).Scan(&user.ID, &user.Username, &user.PasswordHash, &user.FullName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 
 	if err == sql.ErrNoRows {
 		return nil, nil

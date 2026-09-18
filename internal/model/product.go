@@ -8,10 +8,29 @@ type Category struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type Unit struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	Description *string `json:"description,omitempty"`
+}
+
+type CreateUnitRequest struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name" binding:"required,min=2"`
+	Description *string `json:"description,omitempty" binding:"min=5,max=50"`
+}
+
+type UpdateUnitRequest struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name" binding:"required,min=2"`
+	Description *string `json:"description,omitempty" binding:"min=5,max=50"`
+}
+
 type Product struct {
 	ID            int       `json:"id"`
 	CategoryID    *int      `json:"category_id"`
 	CategoryName  *string   `json:"category_name,omitempty"`
+	UnitID        *int      `json:"unit_id"`
 	SKU           *string   `json:"sku"`
 	Name          string    `json:"name"`
 	CostPrice     float64   `json:"cost_price"`
@@ -44,7 +63,7 @@ type UpdateProductRequest struct {
 }
 
 type RestockRequest struct {
-	QuantityAdded int     `json:"quantity_added"`
+	QuantityAdded int      `json:"quantity_added"`
 	NewCostPrice  *float64 `json:"new_cost_price,omitempty"`
-	Notes         string  `json:"notes"`
+	Notes         string   `json:"notes"`
 }
